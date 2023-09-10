@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SampleApi.Core;
+﻿using SampleApi.Core;
 
 namespace SampleApi.Data
 {
