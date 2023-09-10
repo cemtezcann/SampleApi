@@ -16,18 +16,46 @@ namespace SampleApi.Controllers
                 new ProductEntity{Id=5, Name="Keyboard",Price="500"}
             };
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult<List<ProductEntity>>> Get()  // Bring the all product in the Product List
         {
             return Ok(products);
         }
         [HttpGet("{Id}")]
-        public async Task<ActionResult> Get(int Id)
+        public async Task<ActionResult<ProductEntity>> Get(int Id)  // Bring the product of Determined Id
         {
-            var product = products.Find(x => x.Id == Id);
+            var product = products.Find(x => x.Id == Id); // It searches one by one until it found finally bring the product or return bad request.
             if (product == null)
                 return BadRequest("No product Id");
             return Ok(product);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<List<ProductEntity>>> AddProduct(ProductEntity product)  // Let us add the new product on the List
+        {
+            products.Add(product);
+            return Ok(products);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<List<ProductEntity>>> UpdateProduct(ProductEntity request)
+        {
+            var product = products.Find(x => x.Id == request.Id);
+            if (product == null)
+                return BadRequest("No Id it will be changed");
+            product.Name = request.Name; ;
+            product.Price = request.Price;
+            return Ok(products);
+        }
+        [HttpDelete]
+        public async Task<ActionResult<List<ProductEntity>>> DeleteProduct(int Id)
+        {
+            var product = products.Find( x => x.Id == Id);
+            if (product == null)
+                return BadRequest("No Id it will be deleted");
+            products.Remove(product);
+            return Ok(products);
+        }
+        
 
     }
 }
